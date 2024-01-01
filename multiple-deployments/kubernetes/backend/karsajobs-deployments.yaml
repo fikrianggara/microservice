@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: devops-mahir-submission-2-ns
+  labels:
+    app: karsajobs
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: karsajobs
+        tier: backend
+    spec:
+      containers:
+        - name: karsajobs
+          image: ghcr.io/fikrianggara/karsajobs:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: 20m
+          env:
+            - name: APP_PORT
+              value: "8080"
+            - name: MONGO_HOST
+              value: mongo.devops-mahir-submission-2-ns
+            - name: MONGO_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-credential
+                  key: MONGO_ROOT_USERNAME
+            - name: MONGO_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-credential
+                  key: MONGO_ROOT_PASSWORD

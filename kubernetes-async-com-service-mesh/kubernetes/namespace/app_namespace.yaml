@@ -1,0 +1,9 @@
+apiVersion: v1
+# jenis object yaitu namespace
+kind: Namespace
+# beri nama devops-mahir-submission-3-ns
+# namespace ini digunakan di semua service
+metadata:
+  name: devops-mahir-submission-3-ns
+  labels:
+    app: order-shipping

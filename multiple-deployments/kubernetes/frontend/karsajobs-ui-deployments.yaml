@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: devops-mahir-submission-2-ns
+  labels:
+    app: karsajobs
+    tier: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        app: karsajobs
+        tier: frontend
+    spec:
+      containers:
+        - name: karsajobs
+          image: ghcr.io/fikrianggara/karsajobs-ui:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: VUE_APP_BACKEND
+              value: http://10.244.0.184:$(BACKEND_SERVICE_PORT)

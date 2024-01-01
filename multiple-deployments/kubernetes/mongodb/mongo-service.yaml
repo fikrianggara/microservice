@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo
+  namespace: devops-mahir-submission-2-ns
+  labels:
+    app: karsajobs
+    tier: data
+spec:
+  ports:
+    - port: 27017
+  selector:
+    app: mongo
+    tier: data
+  clusterIP: None

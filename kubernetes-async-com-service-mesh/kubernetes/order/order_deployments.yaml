@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+# jenis object k8s Deployment
+kind: Deployment
+# beri nama, dan label
+# tambahkan version agar sesuai dengan yang dibutuhkan istio
+metadata:
+  name: order
+  namespace: devops-mahir-submission-3-ns
+  labels:
+    app: order-shipping
+    tier: order
+    version: v1
+# didefinisikan hanya memiliki 1 replika
+# pod yang bisa diadjust replikasinya yaitu
+# yang memiliki label tier:order dan version:v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: order
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: order-shipping
+        tier: order
+        version: v1
+    spec:
+      # pod hanya memiliki satu kontainer
+      # kontainer berasal dari container registry github packages,
+      # untuk komunikasi internal dan eksternal cluster, port 3000 diekspose
+      serviceAccountName: order
+      containers:
+        - name: order-service
+          image: ghcr.io/fikrianggara/order-service:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+              # service discovery rabbitmq dilakukan dengna menggunakan dns
+            - name: AMQP_URL
+              value: amqp://my-rabbitmq.devops-mahir-submission-3-ns:$(MY_RABBITMQ_SERVICE_PORT)
