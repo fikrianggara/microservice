@@ -8,5 +8,3 @@ tools covered :
  - kubernetes
  - helm
  - istio
- - grafana
- - prometheus
